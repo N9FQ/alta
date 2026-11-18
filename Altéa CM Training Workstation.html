@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Altéa CM Training Workstation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#dde3ec;--pn:#f3f5f9;--tx:#111;--hd:#1d4f91;--bd:#7f8da3;--ln:#c1cad8;--ym:#ffffb0;--fd:#fff;--dis:#d8d8d8;--sel:#2f66b8;--ok:#cfe8cf;--bad:#f2c9c9;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#252b35;--pn:#2e3541;--tx:#e8ebf0;--hd:#173a6b;--bd:#5b6678;--ln:#444e5f;--ym:#6b6a22;--fd:#1b2029;--dis:#3a3a3a;--ok:#2d4a2d;--bad:#5a2d2d}}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{font:11px Tahoma,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--tx);display:flex;flex-direction:column;height:100%}
+#ti{background:linear-gradient(#2a64b0,var(--hd));color:#fff;padding:3px 8px;font-weight:bold;display:flex;justify-content:space-between}
+#mb{display:flex;background:var(--pn);border-bottom:1px solid var(--bd);position:relative}
+.mi{padding:3px 10px;cursor:default}.mi:hover,.mi.on{background:var(--sel);color:#fff}
+#dd{position:absolute;top:100%;background:var(--pn);border:1px solid var(--bd);box-shadow:2px 2px 0 #0004;z-index:20;min-width:230px}
+#dd div{padding:3px 10px;display:flex;justify-content:space-between;gap:20px}#dd div:hover{background:var(--sel);color:#fff}
+#tb{display:flex;background:var(--ln);padding:2px 2px 0;gap:2px;min-height:22px;overflow-x:auto}
+.tab{padding:3px 12px;border:1px solid var(--bd);border-bottom:0;background:var(--pn);cursor:default;white-space:nowrap}.tab.on{background:var(--fd);font-weight:bold;border-top:2px solid var(--sel)}
+#mn{flex:1;overflow:auto;background:var(--pn);border-top:1px solid var(--bd);padding:6px}
+#sb{background:var(--ln);border-top:1px solid var(--bd);padding:2px 8px;display:flex;justify-content:space-between;gap:8px}
+fieldset{border:1px solid var(--bd);margin:0 0 6px;padding:5px 8px}legend{color:var(--hd);font-weight:bold}
+table{border-collapse:collapse;width:100%;background:var(--fd)}th{background:linear-gradient(var(--pn),var(--ln));border:1px solid var(--bd);padding:2px 5px;text-align:left;white-space:nowrap}
+td{border:1px solid var(--ln);padding:2px 5px;white-space:nowrap}tr.s td{background:var(--sel);color:#fff}tr.r{cursor:default}
+.w{overflow-x:auto}input,select{font:11px Tahoma,Arial;border:1px solid var(--bd);padding:1px 3px;background:var(--fd);color:var(--tx)}
+.m{background:var(--ym)}.d{background:var(--dis)}button{font:11px Tahoma,Arial;padding:2px 10px;border:1px solid var(--bd);background:linear-gradient(var(--pn),var(--ln));color:var(--tx);margin:2px 3px 2px 0}button:active{background:var(--ln)}
+.g{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:3px 8px;align-items:center}
+.sm{border-collapse:separate;border-spacing:2px;width:auto;background:none}.sm td{border:1px solid var(--bd);width:30px;height:22px;text-align:center;padding:0;cursor:default;background:var(--fd)}
+.sm td.o{background:var(--bad)}.sm td.b{background:#888;color:#fff}.sm td.x{background:var(--ym)}.sm td.me{background:var(--sel);color:#fff}.sm td.rw{border:0;background:none;width:20px}
+#ov{position:fixed;inset:0;background:#0005;display:flex;align-items:center;justify-content:center;z-index:50}
+#dl{background:var(--pn);border:2px solid var(--hd);min-width:260px;max-width:92%}#dl h4{margin:0;background:var(--hd);color:#fff;padding:3px 8px}#dl p{margin:0;padding:12px;white-space:pre-line}#dl div{text-align:right;padding:0 8px 6px}
+.ok{background:var(--ok)}.er{background:var(--bad)}#tr{background:var(--ym);color:var(--tx);border-top:1px solid var(--bd);padding:4px 8px}
+</style></head><body>
+<div id="ti"><span>Amadeus Altéa Departure Control - Customer Management [TRAINING / OFFLINE]</span><span id="clk"></span></div>
+<div id="mb"></div><div id="tb"></div><div id="mn"></div><div id="tr" hidden></div>
+<div id="sb"></div><div id="ov" hidden></div>
+<script>
+const F=[
+{id:'AX101',o:'LHR',d:'JFK',std:'14:35',ty:'INT',ci:1,bd:0,gate:'B32',ac:'B789',cm:'CATERING LATE. EXIT ROW 7 RESTRICTED.'},
+{id:'AX220',o:'LHR',d:'EDI',std:'15:10',ty:'DOM',ci:1,bd:1,gate:'A07',ac:'A320',cm:'BOARDING IN PROGRESS.'},
+{id:'AX305',o:'LHR',d:'DXB',std:'16:00',ty:'INT',ci:0,bd:0,gate:'C14',ac:'A388',cm:'CHECK-IN CLOSED - ACCEPTANCE BY SUPERVISOR ONLY.'}];
+const P=[
+{id:1,n:'SMITH/JOHN MR',f:'AX101',t:'ADT',d:'JFK',doc:'OK',tk:'OK',al:23,ssr:''},
+{id:2,n:'GARCIA/MARIA MS',f:'AX101',t:'ADT',d:'JFK',doc:'PASSPORT EXPIRED',tk:'OK',al:23,ssr:''},
+{id:3,n:'CHEN/LI MR',f:'AX101',t:'ADT',d:'JFK',doc:'OK',tk:'COUPON SUSPENDED',al:23,ssr:''},
+{id:4,n:'BROWN/EMMA MISS',f:'AX101',t:'CHD',d:'JFK',doc:'OK',tk:'OK',al:23,ssr:'CHLD'},
+{id:5,n:'BROWN/SARAH MS',f:'AX101',t:'ADT',d:'JFK',doc:'OK',tk:'OK',al:23,ssr:''},
+{id:6,n:'BROWN/BABY INF',f:'AX101',t:'INF',d:'JFK',doc:'OK',tk:'OK',al:10,ssr:'INFT',ad:5},
+{id:7,n:'OKAFOR/ADA MRS',f:'AX101',t:'ADT',d:'BOS',doc:'OK',tk:'OK',al:23,ssr:'WCHR',cn:'JFK-BOS AX/BA'},
+{id:8,n:'WILSON/TOM MR',f:'AX101',t:'ADT',d:'JFK',doc:'OK',tk:'OK',al:23,ssr:'',sby:1},
+{id:9,n:'PATEL/RAJ MR',f:'AX220',t:'ADT',d:'EDI',doc:'OK',tk:'OK',al:20,ssr:''},
+{id:10,n:'KING/ANNA MS',f:'AX220',t:'ADT',d:'EDI',doc:'OK',tk:'OK',al:20,ssr:'',st:'ACC',seat:'12A'},
+{id:11,n:'ALI/OMAR MR',f:'AX305',t:'ADT',d:'DXB',doc:'OK',tk:'OK',al:30,ssr:''}];
+P.forEach(p=>{p.h=[];p.st=p.st||'NA';p.seat=p.seat||'';p.pnr='X'+(7000+p.id*37)});
+let B=[{tag:'AX500001',p:10,w:18,d:'EDI',ex:0}],tg=500002;
+const S={tabs:[],cur:null,f:'AX101',sel:null,q:'',tr:0,sc:0,dl:null,dd:null,note:''};
+const APP={flt:'Flight',cust:'Customer',bag:'Baggage',seat:'Seatmap',brd:'Boarding',mon:'Boarding Monitor',trk:'Track'};
+const KEY={h:'cust',f:'flt',s:'seat',g:'bag',b:'brd',d:'mon',k:'trk'};
+const $=i=>document.getElementById(i),fl=i=>F.find(f=>f.id==i),cf=()=>fl(S.f),pp=()=>P.filter(p=>p.f==S.f),sp=()=>P.find(p=>p.id==S.sel);
+const now=()=>new Date().toTimeString().slice(0,5),hist=(p,t)=>p.h.unshift(now()+' '+t);
+const own=s=>P.find(p=>p.f==S.f&&p.seat==s);
+const cnt=f=>{let a=P.filter(p=>p.f==f&&p.t!='INF');return{tot:a.length,acc:a.filter(p=>p.st!='NA').length,brd:a.filter(p=>p.st=='BRD').length,inf:P.filter(p=>p.f==f&&p.t=='INF'&&p.st!='NA').length}};
+const bw=p=>B.filter(b=>b.p==p.id).reduce((a,b)=>a+b.w,0);
+function dlg(t,m,b){S.dl={t,m,b:b||[['OK']]};dr()}
+const err=m=>dlg('Error','\u26D4 '+m),info=m=>dlg('Information','\u2139\uFE0F '+m);
+function dr(){let o=$('ov');if(!S.dl){o.hidden=true;return}o.hidden=false;o.innerHTML='<div id="dl"><h4>'+S.dl.t+'</h4><p>'+S.dl.m+'</p><div>'+S.dl.b.map((b,i)=>'<button onclick="dk('+i+')">'+b[0]+'</button>').join('')+'</div></div>'}
+function dk(i){let f=S.dl.b[i][1];S.dl=null;dr();f&&f();draw()}
+const MENU={Applications:[['Customer','Ctrl+H','openApp("cust")'],['Flight','Ctrl+F','openApp("flt")'],['Seatmap','Ctrl+S','openApp("seat")'],['Baggage','Ctrl+G','openApp("bag")'],['Boarding','Ctrl+B','openApp("brd")'],['Boarding Monitor','Ctrl+D','openApp("mon")'],['Track','Ctrl+K','openApp("trk")'],['Reservations','Ctrl+R','info("RESERVATIONS NOT AVAILABLE IN THIS ENVIRONMENT")']],
+Device:[['Boarding pass printer: READY','',''],['Bag tag printer: READY','',''],['Document reader: NOT CONNECTED','','']],
+Navigation:[['Previous application tab','Alt+Left','mv(-1)'],['Next application tab','Alt+Right','mv(1)'],['Close current application tab','Ctrl+E','closeTab()'],['Close applications','Ctrl+Shift+E','S.tabs=[];S.cur=null;draw()']],
+Logoff:[['Reset training session','','location.reload()']],
+Help:[['Training mode on/off','','S.tr=!S.tr;draw()'],['About','','info("ALTEA CM TRAINING REPLICA\\nFictional data. Offline. Not affiliated with Amadeus.")']]};
+function mbar(){$('mb').innerHTML=Object.keys(MENU).map(k=>'<div class="mi'+(S.dd==k?' on':'')+'" onclick="S.dd=S.dd==\''+k+'\'?null:\''+k+'\';draw()"><u>'+k[0]+'</u>'+k.slice(1)+'</div>').join('')+(S.dd?'<div id="dd" style="left:'+(Object.keys(MENU).indexOf(S.dd)*72)+'px">'+MENU[S.dd].map(m=>'<div onclick="S.dd=null;'+m[2].replace(/"/g,'&quot;')+';draw()"><span>'+m[0]+'</span><span>'+m[1]+'</span></div>').join('')+'</div>':'')}
+function openApp(a){if(!S.tabs.includes(a))S.tabs.push(a);S.cur=a}
+function closeTab(){let i=S.tabs.indexOf(S.cur);if(i<0)return;S.tabs.splice(i,1);S.cur=S.tabs[Math.min(i,S.tabs.length-1)]||null}
+function mv(d){let n=S.tabs.length;if(n)S.cur=S.tabs[(S.tabs.indexOf(S.cur)+d+n)%n]}
+function draw(){mbar();$('tb').innerHTML=S.tabs.map((a,i)=>'<div class="tab'+(a==S.cur?' on':'')+'" onclick="S.cur=\''+a+'\';draw()">'+(i+1)+' '+APP[a]+'</div>').join('');
+$('mn').innerHTML=S.cur?R[S.cur]():'<fieldset><legend>Altéa Customer Management</legend>No application open. Use Applications (Alt+A) or Ctrl+F to open Flight.</fieldset>';
+let f=cf();$('sb').innerHTML='<span>Agent: TRAINEE01 | Flight '+f.id+' '+f.o+'-'+f.d+' '+f.std+'</span><span>'+S.note+'</span>';$('clk').textContent=now();trp()}
+const th=a=>'<tr>'+a.map(x=>'<th>'+x+'</th>').join('')+'</tr>';
+const R={
+flt(){let c=cnt(S.f),f=cf();return '<fieldset><legend>Flight List</legend><div class="w"><table>'+th(['','Flight','Date','Orig','Dest','STD','Type','Check-in','Boarding','Accepted','Boarded'])+F.map(x=>{let k=cnt(x.id);return '<tr class="r'+(x.id==S.f?' s':'')+'" onclick="S.f=\''+x.id+'\';S.sel=null;draw()"><td>'+(x.id==S.f?'\u25CF':'\u25CB')+'</td><td>'+x.id+'</td><td>'+new Date().toISOString().slice(0,10)+'</td><td>'+x.o+'</td><td>'+x.d+'</td><td>'+x.std+'</td><td>'+x.ty+'</td><td>'+(x.ci?'OPEN':'CLOSED')+'</td><td>'+(x.bd?'OPEN':'CLOSED')+'</td><td>'+k.acc+'/'+k.tot+'</td><td>'+k.brd+'</td></tr>'}).join('')+'</table></div></fieldset>'+
+'<fieldset><legend>Flight Details - '+f.id+'</legend><div class="g"><span>Aircraft</span><input class="d" disabled value="'+f.ac+'"><span>Gate</span><input class="d" disabled value="'+f.gate+'"><span>Booked</span><input class="d" disabled value="'+c.tot+'"><span>Accepted</span><input class="d" disabled value="'+c.acc+' (INF '+c.inf+')"><span>Boarded</span><input class="d" disabled value="'+c.brd+'"><span>Status</span><input class="d" disabled value="'+(f.bd?'BOARDING':f.ci?'CHECK-IN':'CLOSED')+'"></div><p>Comments: '+f.cm+'</p><button onclick="tg1(\'ci\')">'+(f.ci?'Close':'Open')+' check-in</button><button onclick="tg1(\'bd\')">'+(f.bd?'Close':'Open')+' boarding</button><button onclick="openApp(\'cust\');draw()">Customer</button></fieldset>'},
+cust(){let l=pp().filter(p=>p.n.includes(S.q.toUpperCase())),p=sp();return '<fieldset><legend>Customer Lookup</legend>Flight <input class="d" disabled size=6 value="'+S.f+'"> Name <input id="q" class="m" size=14 value="'+S.q+'" onkeydown="if(event.key==\'Enter\'){S.q=this.value;draw()}"> <button onclick="S.q=$(\'q\').value;draw()">Search</button></fieldset><fieldset><legend>Customer List</legend><div class="w"><table>'+th(['Name','PNR','Type','Dest','SSR','Status','Seat','Bags'])+(l.map(x=>'<tr class="r'+(x.id==S.sel?' s':'')+'" onclick="S.sel='+x.id+';draw()"><td>'+x.n+'</td><td>'+x.pnr+'</td><td>'+x.t+'</td><td>'+x.d+'</td><td>'+x.ssr+'</td><td>'+(x.sby?'SBY':x.st)+'</td><td>'+x.seat+'</td><td>'+B.filter(b=>b.p==x.id).length+'</td></tr>').join('')||'<tr><td colspan=8>PASSENGER NOT FOUND</td></tr>')+'</table></div></fieldset>'+(p?'<fieldset><legend>Customer Record</legend><div class="g"><span>Name</span><input class="d" disabled value="'+p.n+'"><span>PNR</span><input class="d" disabled value="'+p.pnr+'"><span>Itinerary</span><input class="d" disabled value="'+p.f+' LHR-'+(p.cn?p.cn:p.d)+'"><span>Ticket</span><input class="d" disabled value="'+p.tk+'"><span>Document</span><input class="d" disabled value="'+p.doc+'"><span>SSR</span><input class="d" disabled value="'+(p.ssr||'-')+(p.sby?' STANDBY':'')+'"><span>Seat</span><input class="d" disabled value="'+(p.seat||'-')+'"><span>Baggage</span><input class="d" disabled value="'+bw(p)+'/'+p.al+' KG"></div><button onclick="accept('+p.id+')">Accept</button><button onclick="openApp(\'seat\');draw()">Seat</button><button onclick="openApp(\'bag\');draw()">Baggage</button><button onclick="bp('+p.id+')">Boarding pass</button><p>History: '+(p.h.join(' | ')||'-')+'</p></fieldset>':'')},
+bag(){let p=sp(),l=B.filter(b=>P.find(x=>x.id==b.p).f==S.f);return '<fieldset><legend>Add Baggage</legend>Customer: <b>'+(p?p.n+' (dest '+p.d+')':'none selected - select in Customer')+'</b><br>Weight <input id="bw" class="m" size=4> KG &nbsp;Destination <select id="bdst" class="m">'+['JFK','BOS','LHR','EDI','DXB'].map(x=>'<option>'+x+'</option>').join('')+'</select> <button onclick="addBag()">Add</button></fieldset><fieldset><legend>Baggage List - '+S.f+'</legend><div class="w"><table>'+th(['Tag','Customer','Weight','Routing','Excess','Actions'])+(l.map(b=>{let x=P.find(q=>q.id==b.p);return '<tr><td>'+b.tag+'</td><td>'+x.n+'</td><td><input size=3 id="w'+b.tag+'" value="'+b.w+'"></td><td>'+S.f+' '+b.d+(x.cn?' (conn)':'')+'</td><td>'+(b.ex?'YES':'-')+'</td><td><button onclick="modBag(\''+b.tag+'\')">Modify</button><button onclick="delBag(\''+b.tag+'\')">Remove</button><button onclick="info(\'TAG PRINTED\\n'+b.tag+' '+S.f+' '+b.d+' '+b.w+'KG\')">Print tag</button></td></tr>'}).join('')||'<tr><td colspan=6>NO BAGGAGE</td></tr>')+'</table></div></fieldset>'},
+seat(){let p=sp(),h='<fieldset><legend>Seatmap - '+S.f+' '+cf().ac+'</legend>Customer: <b>'+(p?p.n+' seat '+(p.seat||'-'):'none selected')+'</b> (Exit row 7: ADT only, no WCHR) <table class="sm">';for(let r=1;r<=12;r++){h+='<tr><td class="rw">'+r+'</td>';'ABC.DEF'.split('').forEach(c=>{if(c=='.'){h+='<td class="rw"></td>';return}let s=r+c,o=own(s),k=r<3&&c!='B'&&0?'b':'';if(['1A','1B'].includes(s))k='b';else if(o)k=p&&o.id==p.id?'me':'o';else if(r==7)k='x';h+='<td class="'+k+'" title="'+(o?o.n:'')+'" onclick="pick(\''+s+'\')">'+(o?'X':c)+'</td>'});h+='</tr>'}return h+'</table>Legend: yellow=exit row restricted, red=occupied, grey=blocked, blue=selected pax</fieldset>'},
+brd(){let p=sp();return '<fieldset><legend>Boarding List - '+S.f+' (boarding '+(cf().bd?'OPEN':'CLOSED')+')</legend><div class="w"><table>'+th(['Name','Seat','Status','Type'])+pp().map(x=>'<tr class="r'+(x.id==S.sel?' s':'')+'" onclick="S.sel='+x.id+';draw()"><td>'+x.n+'</td><td>'+x.seat+'</td><td>'+x.st+'</td><td>'+x.t+'</td></tr>').join('')+'</table></div><button onclick="board()">Board customer</button><button onclick="deb(0)">Deboard</button><button onclick="deb(1)">Undo boarding</button></fieldset>'},
+mon(){let c=cnt(S.f);return '<fieldset><legend>Boarding Monitor - '+S.f+'</legend><div class="g"><span>Flight status</span><input class="d" disabled value="'+(cf().bd?'BOARDING':'NOT OPEN')+'"><span>Booked</span><input class="d" disabled value="'+c.tot+'"><span>Accepted</span><input class="d" disabled value="'+c.acc+'"><span>Boarded</span><input class="d" disabled value="'+c.brd+'"><span>Not boarded</span><input class="d" disabled value="'+(c.acc-c.brd)+'"><span>Infants</span><input class="d" disabled value="'+c.inf+'"></div></fieldset><fieldset><legend>Accepted, not boarded</legend>'+(pp().filter(x=>x.st=='ACC').map(x=>x.n+' '+x.seat).join('<br>')||'NONE')+'</fieldset>'},
+trk(){let p=sp();return '<fieldset><legend>Track - '+S.f+'</legend><div class="w"><table>'+th(['Name','Status','Ticket','Document','Last action'])+pp().map(x=>'<tr class="r'+(x.id==S.sel?' s':'')+'" onclick="S.sel='+x.id+';draw()"><td>'+x.n+'</td><td>'+(x.sby?'SBY':x.st)+'</td><td>'+x.tk+'</td><td>'+x.doc+'</td><td>'+(x.h[0]||'-')+'</td></tr>').join('')+'</table></div></fieldset>'+(p?'<fieldset><legend>History - '+p.n+'</legend>'+(p.h.join('<br>')||'-')+'</fieldset>':'')}};
+function tg1(k){let f=cf();f[k]=f[k]?0:1;draw()}
+function seatErr(p,s){let o=own(s);if(p.t=='INF')return'INFANT HAS NO SEAT';if(['1A','1B'].includes(s))return'SEAT UNAVAILABLE - BLOCKED';if(parseInt(s)==7&&(p.t!='ADT'||p.ssr=='WCHR'))return'RESTRICTED SEAT - EXIT ROW NOT PERMITTED FOR THIS CUSTOMER';return null}
+function pick(s){let p=sp();if(!p)return err('NO CUSTOMER SELECTED');if(p.st=='BRD')return err('INVALID PASSENGER STATUS - ALREADY BOARDED');let e=seatErr(p,s),o=own(s);if(e)return err(e);if(o&&o.id==p.id)return;
+if(o){if(o.st=='BRD')return err('SEAT UNAVAILABLE');return dlg('Seat swap','SEAT '+s+' OCCUPIED BY '+o.n+'.\nSWAP SEATS?',[['Yes',()=>{let e2=p.seat?seatErr(o,p.seat):null;if(e2)return err('SWAP REJECTED - '+e2);o.seat=p.seat;p.seat=s;hist(p,'SEAT SWAP '+s);draw()}],['No']])}
+p.seat=s;hist(p,'SEAT '+s);draw()}
+function accept(id){let p=P.find(x=>x.id==id),f=fl(p.f),ad=p.ad&&P.find(x=>x.id==p.ad);
+let e=p.st!='NA'?'PASSENGER ALREADY ACCEPTED':!f.ci?'FLIGHT CLOSED':p.sby?'STANDBY - NO CONFIRMED SPACE':p.tk!='OK'?'INVALID TICKET STATUS - '+p.tk:p.doc!='OK'?'INVALID DOCUMENT - '+p.doc:(ad&&ad.st=='NA')?'ACCOMPANYING ADULT NOT ACCEPTED':null;
+if(e){hist(p,'ACCEPT REJECTED: '+e);return err(e)}
+if(!p.seat&&p.t!='INF'){outer:for(let r=1;r<=12;r++)for(let c of 'ABCDEF'){let s=r+c;if(r!=7&&r>1&&!own(s)){p.seat=s;break outer}}}
+p.st='ACC';hist(p,'ACCEPTED SEAT '+p.seat);S.note='ACCEPTED '+p.n;draw()}
+function bp(id){let p=P.find(x=>x.id==id);if(p.st=='NA')return err('INVALID PASSENGER STATUS - NOT ACCEPTED');info('BOARDING PASS\n'+p.n+'\n'+p.f+' LHR-'+p.d+' '+cf().std+'\nSEAT '+(p.seat||'INF')+' GATE '+fl(p.f).gate)}
+function addBag(){let p=sp();if(!p)return err('NO CUSTOMER SELECTED');if(p.st=='NA')return err('PASSENGER NOT ACCEPTED');if(p.st=='BRD')return err('INVALID PASSENGER STATUS');let w=parseFloat($('bw').value),d=$('bdst').value;
+if(!(w>0))return err('INVALID WEIGHT');if(w>32)return err('BAG OVERWEIGHT - MAX 32KG PER PIECE');if(d!=p.d)return err('INCORRECT BAGGAGE ROUTING - FINAL DESTINATION '+p.d);
+let ex=bw(p)+w>p.al;B.push({tag:'AX'+tg++,p:p.id,w,d,ex:ex?1:0});hist(p,'BAG '+w+'KG '+d);if(ex)info('BAGGAGE ALLOWANCE EXCEEDED BY '+(bw(p)-p.al)+' KG\nEXCESS BAGGAGE CHARGE APPLIES');draw()}
+function modBag(t){let b=B.find(x=>x.tag==t),w=parseFloat($('w'+t).value);if(!(w>0)||w>32)return err('BAG OVERWEIGHT - MAX 32KG PER PIECE');b.w=w;let p=P.find(x=>x.id==b.p);B.filter(x=>x.p==p.id).forEach(x=>x.ex=0);if(bw(p)>p.al)B.find(x=>x.p==p.id).ex=1;draw()}
+function delBag(t){let b=B.find(x=>x.tag==t);if(P.find(x=>x.id==b.p).st=='BRD')return err('INVALID PASSENGER STATUS - ALREADY BOARDED');B=B.filter(x=>x!=b);draw()}
+function board(){let p=sp();if(!p)return err('NO CUSTOMER SELECTED');if(!cf().bd){hist(p,'BOARD REJECTED: BOARDING NOT OPEN');return err('BOARDING NOT OPEN')}
+if(p.st=='BRD')return err('INVALID PASSENGER STATUS - ALREADY BOARDED');if(p.st=='NA'){hist(p,'BOARD REJECTED: INELIGIBLE');return err('INELIGIBLE TO BOARD - PASSENGER NOT ACCEPTED')}
+p.st='BRD';hist(p,'BOARDED');S.note='BOARDED '+p.n;draw()}
+function deb(u){let p=sp();if(!p||p.st!='BRD')return err('INVALID PASSENGER STATUS - NOT BOARDED');dlg('Confirm',(u?'UNDO BOARDING':'DEBOARD')+' '+p.n+'?',[['Yes',()=>{p.st='ACC';hist(p,u?'BOARDING UNDONE':'DEBOARDED');draw()}],['No']])}
+const SC=[
+['S1: GARCIA/MARIA (AX101) presents at check-in. Handle her.',()=>{let p=P[1];return[p.st=='NA',p.h.some(x=>x.includes('REJECTED')),'Passport expired: acceptance must be refused and the customer referred to document/ticket desk.']}],
+['S2: SMITH/JOHN (AX101) has one 30 kg bag to JFK. Accept and check in the bag.',()=>{let p=P[0];return[p.st=='ACC'&&bw(p)==30,B.some(b=>b.p==1&&b.ex),'Allowance 23 kg: accept, register bag tagged JFK, collect 7 kg excess.']}],
+['S3: OKAFOR/ADA (WCHR, connecting to BOS) has one 15 kg bag. Accept and tag to final destination.',()=>{let p=P[6];return[p.st=='ACC'&&B.some(b=>b.p==7&&b.d=='BOS'),p.seat!=''&&parseInt(p.seat)!=7,'Tag to BOS (final), never JFK; WCHR must not sit in exit row 7.']}],
+['S4: On AX220 accept PATEL/RAJ and board him.',()=>{let p=P[8];return[p.st=='BRD',p.h.some(x=>x.includes('ACCEPTED')),'Customer must be accepted before boarding; boarding is open on AX220.']}]];
+function trp(){let t=$('tr');t.hidden=!S.tr;if(!S.tr)return;t.innerHTML='<b>Training:</b> <select onchange="S.sc=+this.value;S.f=[\'AX101\',\'AX101\',\'AX101\',\'AX220\'][S.sc];S.sel=null;draw()">'+SC.map((s,i)=>'<option value="'+i+'"'+(i==S.sc?' selected':'')+'>Scenario '+(i+1)+'</option>').join('')+'</select> '+SC[S.sc][0]+' <button onclick="ev()">Evaluate</button>'}
+function ev(){let r=SC[S.sc][1]();info('DECISION: '+(r[0]?'CORRECT':'INCORRECT')+'\nPROCEDURE: '+(r[1]?'OK':'INCOMPLETE / NOT FOLLOWED')+'\nCORRECT HANDLING: '+r[2])}
+document.addEventListener('keydown',e=>{let k=e.key.toLowerCase();if(e.ctrlKey&&e.shiftKey&&k=='e'){e.preventDefault();S.tabs=[];S.cur=null;draw();return}
+if(e.ctrlKey&&k=='e'){e.preventDefault();closeTab();draw();return}
+if(e.ctrlKey&&KEY[k]){e.preventDefault();openApp(KEY[k]);draw();return}
+if(e.ctrlKey&&k=='r'){e.preventDefault();info('RESERVATIONS NOT AVAILABLE IN THIS ENVIRONMENT');return}
+if(e.altKey){let m={a:'Applications',d:'Device',n:'Navigation',l:'Logoff',h:'Help'}[k];if(m){e.preventDefault();S.dd=S.dd==m?null:m;draw()}if(e.key=='ArrowLeft'){e.preventDefault();mv(-1);draw()}if(e.key=='ArrowRight'){e.preventDefault();mv(1);draw()}}
+if(e.key=='Escape'){S.dd=null;S.dl=null;dr();draw()}});
+openApp('flt');draw();setInterval(()=>{$('clk').textContent=now()},30000);
+</script></body></html>
